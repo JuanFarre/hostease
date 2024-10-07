@@ -3,10 +3,11 @@ package com.Hostease.Hostease.service;
 import com.Hostease.Hostease.model.Usuario;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IUsuarioService {
 
-    public Usuario findById(Long id);
+    public Optional<Usuario> findById(Long id);
 
     public List<Usuario> findAll();
 

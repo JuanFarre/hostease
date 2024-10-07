@@ -20,6 +20,8 @@ public class Usuario {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "username")
+    private String username;
     @Column(name = "password")
     private String password;
     @Column(name = "email")
@@ -28,9 +30,12 @@ public class Usuario {
     private String nombre;
     @Column(name = "apellido")
     private String apellido;
-    @Column()
+    @Column(name = "fecha_nacimiento")
     private LocalDate fecha_nacimiento;
+    @Column(name = "fecha_creacion")
     private Instant fecha_creacion;
+    @Column(name = "fecha_modificacion")
     private LocalDate fecha_modificacion;
-    private Long id_tipo_usuario;
+
+    //private Long id_tipo_usuario;
 }
