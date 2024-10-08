@@ -11,6 +11,7 @@ import java.time.LocalDate;
 
 
 @Table(name = "usuario")
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor

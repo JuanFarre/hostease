@@ -40,24 +40,29 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public Usuario editUsuario(Usuario usuario, Long id) {
-        Usuario userEdit = this.findById(id);
 
+        Optional<Usuario> optionalUsuario = usuarioRepository.findById(id);
 
-        userEdit.setUsername(usuario.getUsername());
-        userEdit.setPassword(usuario.getPassword());
-        userEdit.setEmail(usuario.getEmail());
-        userEdit.setNombre(usuario.getNombre());
-        userEdit.setApellido(usuario.getApellido());
-        userEdit.setFecha_nacimiento(usuario.getFecha_nacimiento());
-        userEdit.setFecha_creacion(usuario.getFecha_creacion());
-        userEdit.setFecha_modificacion(usuario.getFecha_modificacion());
+        if (optionalUsuario.isPresent()) {
+            Usuario userEdit = optionalUsuario.get();
 
-        return usuarioRepository.save(userEdit);
-        //userEdit.setId_tipo_usuario(usuario.getId_tipo_usuario());
-        //@ManyToOne
-        //@JoinColumn(name = "tipo_usuario_id")
-        //private TipoUsuario tipoUsuario;
+            userEdit.setUsername(usuario.getUsername());
+            userEdit.setPassword(usuario.getPassword());
+            userEdit.setEmail(usuario.getEmail());
+            userEdit.setNombre(usuario.getNombre());
+            userEdit.setApellido(usuario.getApellido());
+            userEdit.setFecha_nacimiento(usuario.getFecha_nacimiento());
+            userEdit.setFecha_creacion(usuario.getFecha_creacion());
+            userEdit.setFecha_modificacion(usuario.getFecha_modificacion());
 
+            return usuarioRepository.save(userEdit);
+            //userEdit.setId_tipo_usuario(usuario.getId_tipo_usuario());
+            //@ManyToOne
+            //@JoinColumn(name = "tipo_usuario_id")
+            //private TipoUsuario tipoUsuario;
+
+        } else {
+            throw new RuntimeException("Usuario no encontrado con el ID: " + id);
+        }
     }
 }
-
