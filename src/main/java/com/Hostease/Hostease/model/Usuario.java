@@ -38,5 +38,6 @@ public class Usuario {
     @Column(name = "fecha_modificacion")
     private LocalDate fecha_modificacion;
 
-    //private Long id_tipo_usuario;
+
+    private Long id_tipo_usuario;
 }
