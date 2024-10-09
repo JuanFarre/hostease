@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Table(name = "usuario")
@@ -39,5 +41,11 @@ public class Usuario {
     private LocalDate fecha_modificacion;
 
 
-    private Long id_tipo_usuario;
+    @ManyToMany(cascade = {CascadeType.ALL, CascadeType.MERGE})
+    @JoinTable(
+            name = "usuario_tipo_usuario",
+            joinColumns = @JoinColumn(name = "id_usuario"),
+            inverseJoinColumns = @JoinColumn(name = "id_tipo_usuario")
+    )
+    private Set<TipoUsuario> tipoUsuarios = new HashSet<>();
 }

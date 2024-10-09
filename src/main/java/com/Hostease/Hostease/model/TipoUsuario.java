@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Table(name = "tipo_usuario")
 @Entity
 @Getter
@@ -22,6 +25,8 @@ public class TipoUsuario {
     @Column(name = "nombre")
     private String nombre;
 
+    @ManyToMany(mappedBy = "tipoUsuarios", cascade = {CascadeType.MERGE})
+    private Set<Usuario> usuarios = new HashSet<>();
 
 
 }

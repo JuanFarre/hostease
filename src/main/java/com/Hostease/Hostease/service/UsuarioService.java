@@ -1,11 +1,8 @@
 package com.Hostease.Hostease.service;
 
 import com.Hostease.Hostease.model.Usuario;
-import com.Hostease.Hostease.repository.UsuarioRepository;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import com.Hostease.Hostease.repository.IUsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +12,7 @@ import java.util.Optional;
 public class UsuarioService implements IUsuarioService {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private IUsuarioRepository usuarioRepository;
 
     @Override
     public Optional<Usuario> findById(Long id) {
