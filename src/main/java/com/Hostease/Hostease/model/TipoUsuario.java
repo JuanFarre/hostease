@@ -25,8 +25,8 @@ public class TipoUsuario {
     @Column(name = "nombre")
     private String nombre;
 
-    @ManyToMany(mappedBy = "tipoUsuarios", cascade = {CascadeType.MERGE})
-    private Set<Usuario> usuarios = new HashSet<>();
+    //@ManyToMany(mappedBy = "tipoUsuarios")
+    //private Set<Usuario> usuarios = new HashSet<>();
 
 
 }

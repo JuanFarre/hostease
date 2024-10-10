@@ -41,7 +41,7 @@ public class Usuario {
     private LocalDate fecha_modificacion;
 
 
-    @ManyToMany(cascade = {CascadeType.ALL, CascadeType.MERGE})
+    @ManyToMany
     @JoinTable(
             name = "usuario_tipo_usuario",
             joinColumns = @JoinColumn(name = "id_usuario"),

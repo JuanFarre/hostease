@@ -1,8 +1,7 @@
 package com.Hostease.Hostease.service;
 
 import com.Hostease.Hostease.model.TipoUsuario;
-import com.Hostease.Hostease.model.Usuario;
-import com.Hostease.Hostease.repository.ITipoUsuario;
+import com.Hostease.Hostease.repository.ITipoUsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +13,7 @@ import java.util.Optional;
 public class TipoUsuarioService implements ITipoUsuarioService {
 
     @Autowired
-    private ITipoUsuario tipoUser;
+    private ITipoUsuarioRepository tipoUser;
 
 
     @Override

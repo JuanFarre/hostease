@@ -1,7 +1,9 @@
 package com.Hostease.Hostease.controller;
 
 
+import com.Hostease.Hostease.model.TipoUsuario;
 import com.Hostease.Hostease.model.Usuario;
+import com.Hostease.Hostease.service.ITipoUsuarioService;
 import com.Hostease.Hostease.service.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ public class UsuarioController {
 
     @Autowired
     private IUsuarioService usuarioService;
+
 
 
     @GetMapping("/all")
