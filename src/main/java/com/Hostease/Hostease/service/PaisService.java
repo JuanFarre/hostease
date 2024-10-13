@@ -3,8 +3,10 @@ package com.Hostease.Hostease.service;
 
 import com.Hostease.Hostease.model.Pais;
 import com.Hostease.Hostease.repository.IPaisRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,10 +32,16 @@ public class PaisService implements IPaisService {
         paisRepository.deleteById(id);
     }
 
-    @Override
-    public Pais createPais(Pais pais) {
+    @Transactional
+    public Pais createPais( Pais pais) {
+        if (pais == null || !StringUtils.hasText(pais.getNombre())) {
+            throw new IllegalArgumentException("El nombre del país no puede estar vacío.");
+        }
+
+        // Guardar el país en la base de datos
         return paisRepository.save(pais);
     }
+
 
     @Override
     public Pais editPais(Pais pais, Long id) {
