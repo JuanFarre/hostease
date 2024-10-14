@@ -30,6 +30,7 @@ public class Hospedaje {
     @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion;
 
+
     @Column(name = "fecha_modificacion")
     private LocalDateTime fechaModificacion;
 
