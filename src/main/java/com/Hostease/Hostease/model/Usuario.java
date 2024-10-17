@@ -5,11 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 
 @Table(name = "usuario")
@@ -18,7 +20,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Usuario {
+public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -48,4 +50,39 @@ public class Usuario {
             inverseJoinColumns = @JoinColumn(name = "id_tipo_usuario")
     )
     private Set<TipoUsuario> tipoUsuarios = new HashSet<>();
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (tipoUsuarios == null || tipoUsuarios.isEmpty()) {
+            return new ArrayList<>(); // Retorna una lista vacía si no hay roles
+        }
+
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
+        // Recorre la lista de tipoUsuarios y agrega cada rol con el prefijo "ROLE"
+        for (TipoUsuario tipoUsuario : tipoUsuarios) {
+            authorities.add(new SimpleGrantedAuthority("ROLE" + tipoUsuario.getNombre()));
+        }
+        return authorities;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

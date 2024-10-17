@@ -9,6 +9,8 @@ public interface IUsuarioService {
 
     public Optional<Usuario> findById(Long id);
 
+    public Optional<Usuario> findByUsername(String username);
+
     public List<Usuario> findAll();
 
     public void deleteById(Long id);
