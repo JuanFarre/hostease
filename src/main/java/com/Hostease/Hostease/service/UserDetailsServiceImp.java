@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+
 @Service
 public class UserDetailsServiceImp implements UserDetailsService {
 
@@ -26,16 +28,19 @@ public class UserDetailsServiceImp implements UserDetailsService {
 
 
     public Usuario registrOneCustomer(UsuarioDTO usuarioDTO) {
-        // Validar la contraseña (si tienes algún criterio)
+
         validatePassword(usuarioDTO);
 
-        // Convertir el DTO a una entidad Usuario
+
         Usuario usuario = new Usuario();
-        usuario.setPassword(passwordEncoder.encode(usuarioDTO.getPassword())); // Encriptar la contraseña
+        usuario.setUsername(usuarioDTO.getUsername());
+        usuario.setPassword(passwordEncoder.encode(usuarioDTO.getPassword()));
         usuario.setNombre(usuarioDTO.getNombre());
         usuario.setApellido(usuarioDTO.getApellido());
         usuario.setEmail(usuarioDTO.getEmail());
-
+        usuario.setTipoUsuarios(usuarioDTO.getTipoUsuarios());
+        usuario.setFecha_nacimiento(usuarioDTO.getFecha_nacimiento());
+        usuario.setFecha_creacion(Instant.now());
         // Guardar el usuario en el repositorio
         return usuarioRepository.save(usuario);
     }

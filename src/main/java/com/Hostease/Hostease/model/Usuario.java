@@ -61,7 +61,7 @@ public class Usuario implements UserDetails {
 
         // Recorre la lista de tipoUsuarios y agrega cada rol con el prefijo "ROLE"
         for (TipoUsuario tipoUsuario : tipoUsuarios) {
-            authorities.add(new SimpleGrantedAuthority("ROLE" + tipoUsuario.getNombre()));
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + tipoUsuario.getNombre()));
         }
         return authorities;
     }

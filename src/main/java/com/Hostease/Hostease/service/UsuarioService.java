@@ -6,8 +6,12 @@ import com.Hostease.Hostease.repository.ITipoUsuarioRepository;
 import com.Hostease.Hostease.repository.IUsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +21,8 @@ import java.util.stream.Collectors;
 @Service
 public class UsuarioService implements IUsuarioService {
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private IUsuarioRepository usuarioRepository;
 
@@ -67,32 +73,32 @@ public class UsuarioService implements IUsuarioService {
         if (optionalUsuario.isPresent()) {
             Usuario userEdit = optionalUsuario.get();
 
-            // Actualiza los campos del usuario
+            // Validate email format
+            if (!StringUtils.hasText(usuario.getEmail()) || !usuario.getEmail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+                throw new RuntimeException("Invalid email format.");
+            }
+
+            // Check for duplicate email
+            Optional<Usuario> existingUser = usuarioRepository.findByEmail(usuario.getEmail());
+            if (existingUser.isPresent() && !existingUser.get().getId().equals(id)) {
+                throw new RuntimeException("Email already in use.");
+            }
+
+            // Update fields except for roles
             userEdit.setUsername(usuario.getUsername());
-            userEdit.setPassword(usuario.getPassword());
+            userEdit.setPassword(passwordEncoder.encode(usuario.getPassword()));
             userEdit.setEmail(usuario.getEmail());
             userEdit.setNombre(usuario.getNombre());
             userEdit.setApellido(usuario.getApellido());
             userEdit.setFecha_nacimiento(usuario.getFecha_nacimiento());
-            userEdit.setFecha_creacion(usuario.getFecha_creacion());
-            userEdit.setFecha_modificacion(usuario.getFecha_modificacion());
+            userEdit.setFecha_modificacion(LocalDate.from(Instant.now()));
 
-            // Cargar los tipoUsuarios desde la base de datos
-            Set<TipoUsuario> tiposUsuariosCargados = new HashSet<>();
-            for (TipoUsuario tipoUsuario : usuario.getTipoUsuarios()) {
-                TipoUsuario tipoUsuarioCargado = tipoUsuarioRepository.findById(tipoUsuario.getId())
-                        .orElseThrow(() -> new RuntimeException("TipoUsuario no encontrado: " + tipoUsuario.getId()));
-                tiposUsuariosCargados.add(tipoUsuarioCargado);
-            }
-
-            // Establecer los tipoUsuarios en el usuario editado
-            userEdit.setTipoUsuarios(tiposUsuariosCargados);
-
-            // Guardar el usuario editado
+            // Save the updated user
             return usuarioRepository.save(userEdit);
         } else {
-            throw new RuntimeException("Usuario no encontrado con el ID: " + id);
+            throw new RuntimeException("User not found with ID: " + id);
         }
     }
-
 }
+
+

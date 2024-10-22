@@ -7,6 +7,7 @@ import com.Hostease.Hostease.service.ITipoUsuarioService;
 import com.Hostease.Hostease.service.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,11 +49,14 @@ public class UsuarioController {
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Usuario> editUsuario(@RequestBody Usuario usuario,
-                                               @PathVariable Long id){
-
-        return ResponseEntity.ok(usuarioService.editUsuario(usuario,id));
-
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<String> editUsuario(@RequestBody Usuario usuario, @PathVariable Long id) {
+        try {
+            usuarioService.editUsuario(usuario, id);
+            return ResponseEntity.ok("User profile updated successfully.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 
