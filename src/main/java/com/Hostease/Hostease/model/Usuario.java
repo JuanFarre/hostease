@@ -43,7 +43,7 @@ public class Usuario implements UserDetails {
     private LocalDate fecha_modificacion;
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "usuario_tipo_usuario",
             joinColumns = @JoinColumn(name = "id_usuario"),

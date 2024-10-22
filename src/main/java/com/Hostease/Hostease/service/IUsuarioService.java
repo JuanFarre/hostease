@@ -1,5 +1,6 @@
 package com.Hostease.Hostease.service;
 
+import com.Hostease.Hostease.dto.EditUsuarioDTO;
 import com.Hostease.Hostease.model.Usuario;
 
 import java.util.List;
@@ -18,6 +19,8 @@ public interface IUsuarioService {
     public Usuario createUsuario(Usuario usuario);
 
     public Usuario editUsuario(Usuario usuario, Long id);
+
+    void actualizarUsuario(EditUsuarioDTO editUsuarioDTO, String username);
 
 
 

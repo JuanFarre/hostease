@@ -1,6 +1,7 @@
 package com.Hostease.Hostease.controller;
 
 
+import com.Hostease.Hostease.dto.EditUsuarioDTO;
 import com.Hostease.Hostease.model.TipoUsuario;
 import com.Hostease.Hostease.model.Usuario;
 import com.Hostease.Hostease.service.ITipoUsuarioService;
@@ -8,6 +9,9 @@ import com.Hostease.Hostease.service.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,7 +53,6 @@ public class UsuarioController {
     }
 
     @PutMapping("/edit/{id}")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<String> editUsuario(@RequestBody Usuario usuario, @PathVariable Long id) {
         try {
             usuarioService.editUsuario(usuario, id);
@@ -59,7 +62,24 @@ public class UsuarioController {
         }
     }
 
+    @PutMapping("/modificar")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<String> updateUser(@Validated @RequestBody EditUsuarioDTO editUsuarioDTO, @AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            System.out.println("UserDetails es null");
+            return ResponseEntity.status(401).body("Usuario no autenticado");
+        }
 
+        String authenticatedUsername = userDetails.getUsername();
+        System.out.println("Usuario autenticado: " + authenticatedUsername);
 
+        // Verificar si el usuario autenticado es el mismo que el usuario a actualizar
+        if (!authenticatedUsername.equals(editUsuarioDTO.getUsername())) {
+            return ResponseEntity.status(403).body("No tienes permiso para modificar este perfil");
+        }
+
+        usuarioService.actualizarUsuario(editUsuarioDTO, authenticatedUsername);
+        return ResponseEntity.ok("Perfil actualizado con éxito");
+    }
 
 }

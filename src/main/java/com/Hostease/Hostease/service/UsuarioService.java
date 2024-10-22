@@ -1,5 +1,6 @@
 package com.Hostease.Hostease.service;
 
+import com.Hostease.Hostease.dto.EditUsuarioDTO;
 import com.Hostease.Hostease.model.TipoUsuario;
 import com.Hostease.Hostease.model.Usuario;
 import com.Hostease.Hostease.repository.ITipoUsuarioRepository;
@@ -99,6 +100,20 @@ public class UsuarioService implements IUsuarioService {
             throw new RuntimeException("User not found with ID: " + id);
         }
     }
+    public void actualizarUsuario(EditUsuarioDTO editUsuarioDTO, String username){
+        Usuario usuario = usuarioRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("No existe el usuario " + username));
+
+        usuario.setNombre(editUsuarioDTO.getNombre());
+        usuario.setApellido(editUsuarioDTO.getApellido());
+        usuario.setEmail(editUsuarioDTO.getEmail());
+
+        usuarioRepository.save(usuario);
+
+
+
+    }
+
+
 }
 
 

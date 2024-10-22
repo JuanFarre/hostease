@@ -4,6 +4,8 @@ import com.Hostease.Hostease.dto.UsuarioDTO;
 import com.Hostease.Hostease.model.Usuario;
 import com.Hostease.Hostease.repository.IUsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserDetailsServiceImp implements UserDetailsService {
@@ -56,6 +60,22 @@ public class UserDetailsServiceImp implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con el nombre: " + username));
+
+        // Convertir los roles (tipoUsuarios) a authorities
+        Set<GrantedAuthority> authorities = usuario.getTipoUsuarios().stream()
+                .map(tipoUsuario -> new SimpleGrantedAuthority(tipoUsuario.getNombre()))
+                .collect(Collectors.toSet());
+
+        return User.builder()
+                .username(usuario.getUsername())
+                .password(usuario.getPassword())
+                .authorities(authorities)  // Asignar authorities al usuario
+                .accountExpired(false)
+                .credentialsExpired(false)
+                .accountLocked(false)
+                .disabled(!usuario.isEnabled()) // Considerar el estado habilitado
+                .build();
     }
 }
