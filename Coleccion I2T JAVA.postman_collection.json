@@ -1,0 +1,117 @@
+{
+	"info": {
+		"_postman_id": "d860396a-178c-4ca2-a8c2-c0a46cf2ed2f",
+		"name": "Coleccion I2T JAVA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31878954"
+	},
+	"item": [
+		{
+			"name": "Register y Login",
+			"item": [
+				{
+					"name": "Registrar usuario (sin auth)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"Valentina\",\r\n  \"apellido\": \"Rojas\",\r\n  \"username\": \"valen.rojas_92\",\r\n  \"dni\": \"12345678\",\r\n  \"email\": \"valentina.rojas@example.com\",\r\n  \"fecha_nacimiento\": \"1992-06-15\",\r\n  \"fecha_creacion\": \"2024-10-22T12:00:00Z\",\r\n  \"password\": \"Valen1234!\",\r\n  \"tipoUsuarios\": [\r\n    {\r\n      \"id\": 2\r\n    }\r\n  ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/auth/register",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login (sin auth)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"username\": \"agustin.p_85\",\r\n\"password\": \"PerezAgustin85!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "New Folder",
+			"item": [
+				{
+					"name": "Modificar usuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZ3VzdGluLnBfODUiLCJpYXQiOjE3Mjk2OTY3OTcsImV4cCI6MTcyOTY5ODU5N30.WGWW6wOQi9MS2LbhYPW0asN8JWzRlyGUGjqbMH_QHwk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"Agustin\",\r\n  \"apellido\": \"Pérez\",\r\n  \"username\": \"agustin.p_85\",\r\n  \"email\": \"agustin.perez85@hostease.com\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/usuarios/modificar",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"usuarios",
+								"modificar"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

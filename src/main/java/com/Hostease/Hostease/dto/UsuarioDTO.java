@@ -29,9 +29,6 @@ public class UsuarioDTO {
     @NotBlank(message = "El usuario no puede estar vacío")
     private String username;
 
-    @Pattern(regexp = "\\d{8}", message = "El DNI debe tener exactamente 8 dígitos")
-    private String dni;
-
     @NotBlank(message = "El correo electrónico no puede estar vacío")
     @Pattern(regexp = ".+@.+\\..+", message = "El correo electrónico debe tener un formato válido")
     private String email;
