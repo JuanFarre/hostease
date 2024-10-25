@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.Hostease.Hostease.repository.IHospedajeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +72,8 @@ public class HospedajeService implements IHospedajeService {
             throw new RuntimeException("Hospedaje no encontrado con el ID: " + id);
         }
     }
+
+
 
 }
 

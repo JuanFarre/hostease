@@ -4,6 +4,7 @@ import com.Hostease.Hostease.model.Hospedaje;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface IHospedajeService {
 
@@ -16,5 +17,7 @@ public interface IHospedajeService {
     public Hospedaje createHospedaje(Hospedaje hospedaje);
 
     public Hospedaje editHospedaje(Hospedaje hospedaje, Long id);
+
+
 }
 

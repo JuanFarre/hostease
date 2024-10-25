@@ -43,24 +43,27 @@ public class ServicioController {
     }
 
     // Editar un servicio existente
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Servicio> editServicio(@PathVariable Long id, @RequestBody Servicio servicio) {
+    public ResponseEntity<ServicioDTO> editServicio(@PathVariable Long id, @RequestBody ServicioDTO servicioDTO) {
         try {
-            Servicio updatedServicio = servicioService.editServicio(servicio, id);
-            return ResponseEntity.ok(updatedServicio);
+            Servicio updatedServicio = servicioService.editServicio(servicioService.convertirAModelo(servicioDTO), id);
+            return ResponseEntity.ok(servicioService.convertirADTO(updatedServicio));
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();  // Servicio no encontrado
         }
     }
 
     // Eliminar un servicio por ID
+
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteServicio(@PathVariable Long id) {
+    public ResponseEntity<String> deleteServicio(@PathVariable Long id) {
         try {
             servicioService.deleteById(id);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok("Servicio eliminado con éxito");
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();  // Servicio no encontrado
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Servicio no encontrado");
         }
     }
 }
