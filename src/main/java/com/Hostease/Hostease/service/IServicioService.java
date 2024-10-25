@@ -1,5 +1,6 @@
 package com.Hostease.Hostease.service;
 
+import com.Hostease.Hostease.dto.ServicioDTO;
 import com.Hostease.Hostease.model.Servicio;
 
 import java.util.List;
@@ -17,5 +18,8 @@ public interface IServicioService {
 
     public Servicio editServicio(Servicio servicio, Long id);
 
+    public ServicioDTO convertirADTO(Servicio servicio);
+
+    public Servicio convertirAModelo(ServicioDTO dto);
 }
 

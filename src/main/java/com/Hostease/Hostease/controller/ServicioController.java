@@ -1,11 +1,13 @@
 package com.Hostease.Hostease.controller;
 
 
+import com.Hostease.Hostease.dto.ServicioDTO;
 import com.Hostease.Hostease.model.Servicio;
 import com.Hostease.Hostease.service.IServicioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,11 +34,12 @@ public class ServicioController {
         return servicio.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Crear un nuevo servicio
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     @PostMapping("/crear")
-    public ResponseEntity<Servicio> createServicio(@RequestBody Servicio servicio) {
+    public ResponseEntity<ServicioDTO> createServicio(@RequestBody ServicioDTO servicioDTO) {
+        Servicio servicio = servicioService.convertirAModelo(servicioDTO);
         Servicio createdServicio = servicioService.createServicio(servicio);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdServicio);
+        return ResponseEntity.status(HttpStatus.CREATED).body(servicioService.convertirADTO(createdServicio));
     }
 
     // Editar un servicio existente

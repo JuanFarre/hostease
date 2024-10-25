@@ -20,8 +20,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private UserDetailsServiceImp userDetailsService;
 
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -34,8 +32,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/usuarios/crear").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
-                        .anyRequest().authenticated()
-                )
+                        .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 );

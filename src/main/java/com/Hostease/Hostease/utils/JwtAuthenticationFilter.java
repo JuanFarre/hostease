@@ -2,24 +2,16 @@ package com.Hostease.Hostease.utils;
 
 import com.Hostease.Hostease.model.Usuario;
 import com.Hostease.Hostease.service.JwtService;
-import com.Hostease.Hostease.service.UserDetailsServiceImp;
 import com.Hostease.Hostease.service.UsuarioService;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -31,7 +23,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private JwtService jwtService;
 
     @Autowired
-    private UserDetailsServiceImp userDetailsService;
+    private UsuarioService usuarioService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -46,11 +38,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            Usuario usuario = usuarioService.findByUsername(username)
+                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado."));
 
-            if (jwtService.validateToken(jwt, userDetails)) {
+            if (jwtService.validateToken(jwt, usuario)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
+                        usuario, null, usuario.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }

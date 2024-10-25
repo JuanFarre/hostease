@@ -1,4 +1,5 @@
 package com.Hostease.Hostease.service;
+import com.Hostease.Hostease.dto.ServicioDTO;
 import com.Hostease.Hostease.model.Hospedaje;
 import com.Hostease.Hostease.model.Servicio;
 import com.Hostease.Hostease.model.TipoHospedaje;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ServicioService implements IServicioService {
@@ -100,6 +102,24 @@ public class ServicioService implements IServicioService {
         // Guarda el servicio actualizado en la base de datos
         return servicioRepository.save(servicioExistente);
     }
+    @Override
+    public ServicioDTO convertirADTO(Servicio servicio) {
+        ServicioDTO dto = new ServicioDTO();
+        dto.setId(servicio.getId());
+        dto.setNombre(servicio.getNombre());
+        return dto;
+    }
 
-}
+    @Override
+    public Servicio convertirAModelo(ServicioDTO dto) {
+        Servicio servicio = new Servicio();
+        servicio.setId(dto.getId());
+        servicio.setNombre(dto.getNombre());
+        return servicio;
+    }
+
+
+
+
+    }
 
