@@ -1,12 +1,14 @@
 package com.Hostease.Hostease.service;
 
 import com.Hostease.Hostease.model.Hospedaje;
+import com.Hostease.Hostease.model.Servicio;
 import com.Hostease.Hostease.repository.ICiudadRepository;
 import com.Hostease.Hostease.repository.ITipoHospedajeRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -49,31 +51,28 @@ public class HospedajeService implements IHospedajeService {
     }
 
     @Override
+    @Transactional
     public Hospedaje editHospedaje(Hospedaje hospedaje, Long id) {
-        Optional<Hospedaje> optionalHospedaje = hospedajeRepository.findById(id);
+        Hospedaje existingHospedaje = hospedajeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Hospedaje no encontrado con ID: " + id));
 
-        if (optionalHospedaje.isPresent()) {
-            Hospedaje hospedajeExistente = optionalHospedaje.get();
+        existingHospedaje.setDescripcion(hospedaje.getDescripcion());
+        existingHospedaje.setPrecioPorNoche(hospedaje.getPrecioPorNoche());
+        existingHospedaje.setImagen(hospedaje.getImagen());
+        existingHospedaje.setTipoHospedaje(hospedaje.getTipoHospedaje());
+        existingHospedaje.setCiudad(hospedaje.getCiudad());
+        existingHospedaje.setFechaModificacion(hospedaje.getFechaModificacion());
 
-            // Actualizar los campos del hospedaje existente
-            hospedajeExistente.setDescripcion(hospedaje.getDescripcion());
-            hospedajeExistente.setImagen(hospedaje.getImagen());
-            hospedajeExistente.setPrecioPorNoche(hospedaje.getPrecioPorNoche());
-            hospedajeExistente.setFechaModificacion(LocalDateTime.now());
+        // Maneja los servicios: eliminar y agregar nuevos servicios para reflejar cambios en la tabla intermedia
+        Set<Servicio> serviciosActuales = new HashSet<>(existingHospedaje.getServicios());
+        existingHospedaje.getServicios().removeAll(serviciosActuales); // Elimina la relación en la tabla intermedia
 
-            // Si se quiere cambiar el tipo de hospedaje y la ciudad
-            if (hospedaje.getTipoHospedaje() != null) {
-                hospedajeExistente.setTipoHospedaje(hospedaje.getTipoHospedaje());
-            }
-            if (hospedaje.getCiudad() != null) {
-                hospedajeExistente.setCiudad(hospedaje.getCiudad());
-            }
+        existingHospedaje.getServicios().addAll(hospedaje.getServicios()); // Añade los nuevos servicios
 
-            return hospedajeRepository.save(hospedajeExistente);
-        } else {
-            throw new RuntimeException("Hospedaje no encontrado con el ID: " + id);
-        }
+        // Guardar los cambios
+        return hospedajeRepository.save(existingHospedaje);
     }
+
 
 
 

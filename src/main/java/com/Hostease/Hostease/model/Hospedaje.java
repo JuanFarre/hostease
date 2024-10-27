@@ -45,7 +45,7 @@ public class Hospedaje {
     @JoinColumn(name = "id_ciudad")
     private Ciudad ciudad;
 
-    @ManyToMany(mappedBy = "hospedajes", fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToMany(mappedBy = "hospedajes", fetch = FetchType.EAGER, cascade = { CascadeType.ALL})
     @JsonIgnore
     private Set<Servicio> servicios = new HashSet<>();
 

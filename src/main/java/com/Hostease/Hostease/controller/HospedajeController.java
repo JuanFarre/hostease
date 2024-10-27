@@ -1,5 +1,6 @@
 package com.Hostease.Hostease.controller;
 
+import com.Hostease.Hostease.dto.EditHospedajeDTO;
 import com.Hostease.Hostease.dto.HospedajeDTO;
 import com.Hostease.Hostease.model.Ciudad;
 import com.Hostease.Hostease.model.Hospedaje;
@@ -75,16 +76,35 @@ public class HospedajeController {
 
 
 
-    // Método para editar un hospedaje existente
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Hospedaje> editHospedaje(@RequestBody Hospedaje hospedaje, @PathVariable Long id) {
-        Optional<TipoHospedaje> optionalTipoHospedaje = tipoHospedajeService.findById(hospedaje.getTipoHospedaje().getId());
-        Optional<Ciudad> optionalCiudad = ciudadService.findById(hospedaje.getCiudad().getId());
+    public ResponseEntity<Hospedaje> editHospedaje(@Validated @RequestBody EditHospedajeDTO editHospedajeDTO, @PathVariable Long id) {
+        Optional<Hospedaje> optionalHospedaje = hospedajeService.findById(id);
+        if (!optionalHospedaje.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Hospedaje hospedaje = optionalHospedaje.get();
+
+        Optional<TipoHospedaje> optionalTipoHospedaje = tipoHospedajeService.findById(editHospedajeDTO.getTipoHospedajeId());
+        Optional<Ciudad> optionalCiudad = ciudadService.findById(editHospedajeDTO.getCiudadId());
 
         if (optionalTipoHospedaje.isPresent() && optionalCiudad.isPresent()) {
+            hospedaje.setDescripcion(editHospedajeDTO.getDescripcion());
+            hospedaje.setPrecioPorNoche(editHospedajeDTO.getPrecioPorNoche());
+            hospedaje.setImagen(editHospedajeDTO.getImagen());
             hospedaje.setTipoHospedaje(optionalTipoHospedaje.get());
-            hospedaje.setCiudad(optionalCiudad.get());
+            Ciudad ciudad = optionalCiudad.get();
+            hospedaje.setCiudad(ciudad);
             hospedaje.setFechaModificacion(LocalDateTime.now());
+
+            // Clear existing services and set new ones
+            Set<Servicio> servicios = new HashSet<>();
+            for (Long servicioId : editHospedajeDTO.getServiciosIds()) {
+                Optional<Servicio> optionalServicio = servicioService.findById(servicioId);
+                optionalServicio.ifPresent(servicios::add);
+            }
+            hospedaje.setServicios(servicios);
+
             Hospedaje updatedHospedaje = hospedajeService.editHospedaje(hospedaje, id);
             return ResponseEntity.ok(updatedHospedaje);
         } else {
