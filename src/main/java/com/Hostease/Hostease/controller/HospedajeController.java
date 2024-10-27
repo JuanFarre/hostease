@@ -11,6 +11,7 @@ import com.Hostease.Hostease.service.IServicioService;
 import com.Hostease.Hostease.service.ITipoHospedajeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,13 +40,13 @@ public class HospedajeController {
 
 
     @PostMapping("/crear")
+    @PreAuthorize("hasRole('ANFITRION')")
     public ResponseEntity<Hospedaje> createHospedaje(@Validated @RequestBody HospedajeDTO hospedajeDTO) {
         Optional<TipoHospedaje> optionalTipoHospedaje = tipoHospedajeService.findById(hospedajeDTO.getTipoHospedajeId());
         Optional<Ciudad> optionalCiudad = ciudadService.findById(hospedajeDTO.getCiudadId());
 
         if (optionalTipoHospedaje.isPresent() && optionalCiudad.isPresent()) {
             Hospedaje hospedaje = new Hospedaje();
-            //hospedaje.setNombre(hospedajeDTO.getNombre()); LE FALTA A LA BASE DE DATOS...
             hospedaje.setDescripcion(hospedajeDTO.getDescripcion());
             hospedaje.setPrecioPorNoche(hospedajeDTO.getPrecioPorNoche());
             hospedaje.setImagen(hospedajeDTO.getImagen());
@@ -57,7 +58,11 @@ public class HospedajeController {
             Set<Servicio> servicios = new HashSet<>();
             for (Long servicioId : hospedajeDTO.getServiciosIds()) {
                 Optional<Servicio> optionalServicio = servicioService.findById(servicioId);
-                optionalServicio.ifPresent(servicios::add);
+                if (optionalServicio.isPresent()) {
+                    Servicio servicio = optionalServicio.get();
+                    servicios.add(servicio);
+                    servicio.getHospedajes().add(hospedaje); // Asignar el hospedaje al servicio
+                }
             }
             hospedaje.setServicios(servicios);
 
@@ -67,6 +72,7 @@ public class HospedajeController {
             return ResponseEntity.badRequest().body(null);
         }
     }
+
 
 
     // Método para editar un hospedaje existente

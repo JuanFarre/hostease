@@ -3,6 +3,7 @@ package com.Hostease.Hostease.service;
 import com.Hostease.Hostease.model.Hospedaje;
 import com.Hostease.Hostease.repository.ICiudadRepository;
 import com.Hostease.Hostease.repository.ITipoHospedajeRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -42,6 +43,7 @@ public class HospedajeService implements IHospedajeService {
     }
 
     @Override
+    @Transactional
     public Hospedaje createHospedaje(Hospedaje hospedaje) {
         return hospedajeRepository.save(hospedaje);
     }

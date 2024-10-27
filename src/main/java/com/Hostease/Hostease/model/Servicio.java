@@ -26,7 +26,7 @@ public class Servicio {
     private String nombre;
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
             name = "servicio_hospedaje",
             joinColumns = @JoinColumn(name = "id_servicio"),

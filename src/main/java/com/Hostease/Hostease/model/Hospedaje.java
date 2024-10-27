@@ -1,5 +1,6 @@
 package com.Hostease.Hostease.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,8 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Table(name = "hospedaje")
@@ -41,5 +44,10 @@ public class Hospedaje {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_ciudad")
     private Ciudad ciudad;
+
+    @ManyToMany(mappedBy = "hospedajes", fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JsonIgnore
+    private Set<Servicio> servicios = new HashSet<>();
+
 
 }
