@@ -38,8 +38,6 @@ public class HospedajeController {
     @Autowired
     private IServicioService servicioService;
 
-
-
     @PostMapping("/crear")
     @PreAuthorize("hasRole('ANFITRION')")
     public ResponseEntity<Hospedaje> createHospedaje(@Validated @RequestBody HospedajeDTO hospedajeDTO) {
@@ -59,11 +57,7 @@ public class HospedajeController {
             Set<Servicio> servicios = new HashSet<>();
             for (Long servicioId : hospedajeDTO.getServiciosIds()) {
                 Optional<Servicio> optionalServicio = servicioService.findById(servicioId);
-                if (optionalServicio.isPresent()) {
-                    Servicio servicio = optionalServicio.get();
-                    servicios.add(servicio);
-                    servicio.getHospedajes().add(hospedaje); // Asignar el hospedaje al servicio
-                }
+                optionalServicio.ifPresent(servicios::add);
             }
             hospedaje.setServicios(servicios);
 
@@ -73,8 +67,6 @@ public class HospedajeController {
             return ResponseEntity.badRequest().body(null);
         }
     }
-
-
 
     @PutMapping("/edit/{id}")
     public ResponseEntity<Hospedaje> editHospedaje(@Validated @RequestBody EditHospedajeDTO editHospedajeDTO, @PathVariable Long id) {

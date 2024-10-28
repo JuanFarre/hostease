@@ -26,11 +26,4 @@ public class Servicio {
     private String nombre;
 
 
-        @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-            name = "servicio_hospedaje",
-            joinColumns = @JoinColumn(name = "id_servicio"),
-            inverseJoinColumns = @JoinColumn(name = "id_hospedaje")
-    )
-    private Set<Hospedaje> hospedajes = new HashSet<>();
-}
+    }

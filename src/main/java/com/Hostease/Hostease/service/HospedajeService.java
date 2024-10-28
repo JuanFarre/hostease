@@ -1,18 +1,13 @@
 package com.Hostease.Hostease.service;
 
 import com.Hostease.Hostease.model.Hospedaje;
-import com.Hostease.Hostease.model.Servicio;
 import com.Hostease.Hostease.repository.ICiudadRepository;
 import com.Hostease.Hostease.repository.ITipoHospedajeRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.Hostease.Hostease.repository.IHospedajeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,18 +58,10 @@ public class HospedajeService implements IHospedajeService {
         existingHospedaje.setCiudad(hospedaje.getCiudad());
         existingHospedaje.setFechaModificacion(hospedaje.getFechaModificacion());
 
-        // Maneja los servicios: eliminar y agregar nuevos servicios para reflejar cambios en la tabla intermedia
-        Set<Servicio> serviciosActuales = new HashSet<>(existingHospedaje.getServicios());
-        existingHospedaje.getServicios().removeAll(serviciosActuales); // Elimina la relación en la tabla intermedia
-
-        existingHospedaje.getServicios().addAll(hospedaje.getServicios()); // Añade los nuevos servicios
+        // Actualiza los servicios
+        existingHospedaje.setServicios(hospedaje.getServicios());
 
         // Guardar los cambios
         return hospedajeRepository.save(existingHospedaje);
     }
-
-
-
-
 }
-

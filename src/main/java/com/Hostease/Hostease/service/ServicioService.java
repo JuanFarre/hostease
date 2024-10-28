@@ -1,16 +1,13 @@
 package com.Hostease.Hostease.service;
+
 import com.Hostease.Hostease.dto.ServicioDTO;
-import com.Hostease.Hostease.model.Hospedaje;
 import com.Hostease.Hostease.model.Servicio;
-import com.Hostease.Hostease.model.TipoHospedaje;
-import com.Hostease.Hostease.repository.IHospedajeRepository;
 import com.Hostease.Hostease.repository.IServicioRepository;
-import com.Hostease.Hostease.repository.ITipoHospedajeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ServicioService implements IServicioService {
@@ -18,18 +15,11 @@ public class ServicioService implements IServicioService {
     @Autowired
     private IServicioRepository servicioRepository;
 
-    @Autowired
-    private IHospedajeRepository hospedajeRepository;
-
-
-
     @Override
     public Optional<Servicio> findById(Long id) {
         // Retorna el servicio encontrado por su ID
         return servicioRepository.findById(id);
     }
-
-
 
     @Override
     public List<Servicio> findAll() {
@@ -48,29 +38,10 @@ public class ServicioService implements IServicioService {
     }
 
     @Override
-
     public Servicio createServicio(Servicio servicio) {
-
-        Set<Hospedaje> hospedajesCargados = new HashSet<>();
-
-        for (Hospedaje hosped : servicio.getHospedajes()) {
-            // Verificamos si el hospedaje existe en la base de datos
-            Hospedaje hospedajeCompleto = hospedajeRepository.findById(hosped.getId())
-                    .orElseThrow(() -> new RuntimeException("Hospedaje no encontrado con el ID " + hosped.getId()));
-
-            // Asegúrate de que el tipo de hospedaje y otros atributos sean correctos
-            if (hospedajeCompleto.getTipoHospedaje() == null) {
-                throw new RuntimeException("El tipo de hospedaje para el ID " + hosped.getId() + " no está definido.");
-            }
-
-            hospedajesCargados.add(hospedajeCompleto);
-        }
-
-        servicio.setHospedajes(hospedajesCargados);
+        // Crea y guarda un nuevo servicio
         return servicioRepository.save(servicio);
     }
-
-
 
     @Override
     public Servicio editServicio(Servicio servicio, Long id) {
@@ -81,28 +52,10 @@ public class ServicioService implements IServicioService {
         // Actualiza los campos del servicio existente con los nuevos valores
         servicioExistente.setNombre(servicio.getNombre()); // Actualiza el nombre u otros campos según sea necesario
 
-        // Actualiza la lista de hospedajes, si es necesa
-        // rio
-        Set<Hospedaje> hospedajesCargados = new HashSet<>();
-        for (Hospedaje hosped : servicio.getHospedajes()) {
-            // Verificamos si el hospedaje existe en la base de datos
-            Hospedaje hospedajeCompleto = hospedajeRepository.findById(hosped.getId())
-                    .orElseThrow(() -> new RuntimeException("Hospedaje no encontrado con el ID " + hosped.getId()));
-
-            // Asegúrate de que el tipo de hospedaje y otros atributos sean correctos
-            if (hospedajeCompleto.getTipoHospedaje() == null) {
-                throw new RuntimeException("El tipo de hospedaje para el ID " + hosped.getId() + " no está definido.");
-            }
-
-            hospedajesCargados.add(hospedajeCompleto);
-        }
-
-        // Establece los hospedajes cargados al servicio existente
-        servicioExistente.setHospedajes(hospedajesCargados);
-
         // Guarda el servicio actualizado en la base de datos
         return servicioRepository.save(servicioExistente);
     }
+
     @Override
     public ServicioDTO convertirADTO(Servicio servicio) {
         ServicioDTO dto = new ServicioDTO();
@@ -118,11 +71,4 @@ public class ServicioService implements IServicioService {
         servicio.setNombre(dto.getNombre());
         return servicio;
     }
-
-
-
-
-
-
-    }
-
+}
