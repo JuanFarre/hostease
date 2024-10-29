@@ -32,6 +32,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/usuarios/crear").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/ciudades/**").permitAll()
+                        .requestMatchers("/api/paises/**").permitAll()
+                        .requestMatchers("api/tipos-hospedaje/**").permitAll()
+                        .requestMatchers("/api/tipo-usuarios/**").permitAll()
+
+
+
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

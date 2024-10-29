@@ -10,13 +10,13 @@
 			"name": "Register y Login",
 			"item": [
 				{
-					"name": "Registrar usuario (sin auth)",
+					"name": "1-Registrar usuario (sin auth)",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nombre\": \"Valentina\",\r\n  \"apellido\": \"Rojas\",\r\n  \"username\": \"valen.rojas_92\",\r\n  \"dni\": \"12345678\",\r\n  \"email\": \"valentina.rojas@example.com\",\r\n  \"fecha_nacimiento\": \"1992-06-15\",\r\n  \"fecha_creacion\": \"2024-10-22T12:00:00Z\",\r\n  \"password\": \"Valen1234!\",\r\n  \"tipoUsuarios\": [\r\n    {\r\n      \"id\": 2\r\n    }\r\n  ]\r\n}\r\n",
+							"raw": "{\r\n  \"nombre\": \"Lucía\",\r\n  \"apellido\": \"Martínez\",\r\n  \"username\": \"lucia.m_87\",\r\n  \"dni\": \"87654321\",\r\n  \"email\": \"lucia.martinez87@host.com\",\r\n  \"fecha_nacimiento\": \"1987-06-10\",\r\n  \"fecha_creacion\": \"2024-08-23T16:00:00Z\",\r\n  \"password\": \"MartinezLucia87*\",\r\n  \"tipoUsuarios\": [\r\n    {\r\n      \"id\": 2\r\n    }\r\n  ]\r\n}\r\n\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -39,7 +39,7 @@
 					"response": []
 				},
 				{
-					"name": "Login (sin auth)",
+					"name": "12 - Login (sin auth)",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -70,10 +70,115 @@
 			]
 		},
 		{
-			"name": "New Folder",
+			"name": "ADMIN",
 			"item": [
 				{
-					"name": "Modificar usuario",
+					"name": "3-Crear Servicio ADMIN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjYXJsb3Mucl85MCIsImlhdCI6MTcyOTg3NzA4NiwiZXhwIjoxNzI5ODc4ODg2fQ.FZgD0KoZ6YFhby6Hpt7MM-RckU0OnL--ehI1LmcuJaM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"Servicio Nuevo\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/servicios/crear",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"servicios",
+								"crear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4- Editar Servicio ADMIN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjYXJsb3Mucl85MCIsImlhdCI6MTcyOTg4MzYxNiwiZXhwIjoxNzI5ODg1NDE2fQ.IIgIDJsHgFdLF8XmT7TJ8Yzg10xu3b23S2vs-mk25c8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\":\"Servicio Extra\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/servicios/edit/12",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"servicios",
+								"edit",
+								"12"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5 - Eliminar Servicio ADMIN",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/servicios/delete/12",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"servicios",
+								"delete",
+								"12"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Modificar Usuario",
+			"item": [
+				{
+					"name": "2- Modificación de Usuario (Usuario registrado):",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -112,6 +217,418 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "ANFITRION",
+			"item": [
+				{
+					"name": "6 - Crear Hospedaje ANFITRION",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkaWVnby5mXzg4IiwiaWF0IjoxNzI5OTUxNDEzLCJleHAiOjE3Mjk5NTMyMTN9.TnkJF--Cgjtq9tnZ3Q3aqBOuc5fJBqGgwyLRXgyp5E8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"Apartamento Urbano\",\r\n  \"descripcion\": \"Moderno apartamento en el centro de la ciudad, cerca de todas las comodidades.\",\r\n  \"precioPorNoche\": 120.00,\r\n  \"imagen\": \"https://example.com/images/apartamento_urbano.jpg\",\r\n  \"ciudadId\": 3,\r\n  \"tipoHospedajeId\": 1,\r\n  \"serviciosIds\": [1, 2, 4]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/hospedajes/crear",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"hospedajes",
+								"crear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7- Editar Hospedaje ANFITRION",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkaWVnby5mXzg4IiwiaWF0IjoxNzMwMDY5OTg0LCJleHAiOjE3MzAwNzE3ODR9.0KeY2gHDUrmMvMnrGJIdkKDRe-2OLjgt8VsUXYkLu7A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"actualizar \",\r\n  \"descripcion\": \"Actualizad\",\r\n  \"precioPorNoche\": 200.00,\r\n  \"imagen\": \"actualizada\",\r\n  \"ciudadId\": 20,\r\n  \"tipoHospedajeId\": 4,\r\n  \"serviciosIds\": [3]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/hospedajes/edit/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"hospedajes",
+								"edit",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8 -Delete Hospedaje ANFITRION",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/hospedajes/delete/5",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"hospedajes",
+								"delete",
+								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "INQUILINO",
+			"item": [
+				{
+					"name": "9- Crear Reserva INQUILINO",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"idHospedaje\": 3,\r\n  \"idUsuario\": 20,\r\n  \"fechaCheckIn\": \"2024-11-01T15:00:00\",\r\n  \"fechaCheckOut\": \"2024-11-10T11:00:00\",\r\n  \"cantNinos\": 2,\r\n  \"cantAdultos\": 2,\r\n  \"cantBebes\": 1,\r\n  \"cantMascotas\": 0,\r\n  \"fechaCreacion\": \"2024-10-23T09:30:00\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/reservas/crear",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"reservas",
+								"crear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "10 -Editar Reserva INQUILINO",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"fechaCheckIn\": \"2024-11-29T15:00:00\",\r\n  \"fechaCheckOut\": \"2024-12-2T11:00:00\",\r\n  \"cantNinos\": 2,\r\n  \"cantAdultos\": 3,\r\n  \"cantBebes\": 5,\r\n  \"cantMascotas\": 0\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/reservas/modificar/2/22",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"reservas",
+								"modificar",
+								"2",
+								"22"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "11 -Eliminar Reserva INQUILINO",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/reservas/delete/2/22",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"reservas",
+								"delete",
+								"2",
+								"22"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ENDPOINTS GENERALES",
+			"item": [
+				{
+					"name": "Endpoints Ciudades",
+					"item": [
+						{
+							"name": "Todas las ciudades",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "Buscar ciudad",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "Crear ciudad",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nombre\": \"Ciudad Ejemplo\",\r\n  \"pais\": {\r\n    \"id\": 1\r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/ciudades/crear",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"ciudades",
+										"crear"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Editar ciudad",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nombre\": \"Ciudad Editada\",\r\n  \"pais\": {\r\n    \"id\": 2\r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/ciudades/edit/101",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"ciudades",
+										"edit",
+										"101"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Eliminar ciudad",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/ciudades/delete/101",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"ciudades",
+										"delete",
+										"101"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Endpoints Paises",
+					"item": [
+						{
+							"name": "Todos los paises",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/paises/all",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"paises",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Buscar pais",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "Crear pais",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nombre\":\"Ejemplo\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/paises/crear",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"paises",
+										"crear"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "edit pais",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nombre\":\"Cambio de nombre\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/paises/edit/11",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"paises",
+										"edit",
+										"11"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete pais",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/paises/delete/11",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"paises",
+										"delete",
+										"11"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"description": "LOS ENDPOINTS GENERALES VAN A ESTAR LIBERADOS SIN AUTENTICACION PARA HACER MAS FACIL SU CONTROL. LO IDEAL SERIA QUE ESTOS ENDPOINTS GENERALES LOS MANEJE EL ADMINISTRADOR."
 		}
 	]
 }
