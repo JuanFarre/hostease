@@ -8,6 +8,8 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,9 +71,10 @@ public class ReservaService implements IReservaService {
         if (reserva.getFechaCreacion() != null) {
             reservaEdit.setFechaCreacion(reserva.getFechaCreacion());
         }
-        if (reserva.getFechaModificacion() != null) {
-            reservaEdit.setFechaModificacion(reserva.getFechaModificacion());
-        }
+
+
+        reservaEdit.setFechaModificacion(LocalDateTime.now());
+
 
         // Guardar la reserva editada
         return reservaRepository.save(reservaEdit);
@@ -81,5 +84,12 @@ public class ReservaService implements IReservaService {
     @Override
     public void deleteById(PKReserva id) {
         reservaRepository.deleteById(id);
+    }
+
+
+    @Override
+    public boolean HospedajeDisponible(Long idHospedaje, Date fechaCheckIn, Date fechaCheckOut) {
+        List<Reserva> reservas = reservaRepository.findReservasByHospedajeAndDates(idHospedaje, fechaCheckIn, fechaCheckOut);
+        return reservas.isEmpty();
     }
 }

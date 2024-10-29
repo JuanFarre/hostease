@@ -68,6 +68,7 @@ public class HospedajeController {
         }
     }
 
+    @PreAuthorize("hasRole('ANFITRION')")
     @PutMapping("/edit/{id}")
     public ResponseEntity<Hospedaje> editHospedaje(@Validated @RequestBody EditHospedajeDTO editHospedajeDTO, @PathVariable Long id) {
         Optional<Hospedaje> optionalHospedaje = hospedajeService.findById(id);
@@ -119,6 +120,7 @@ public class HospedajeController {
     }
 
     // Método para eliminar un hospedaje por ID
+    @PreAuthorize("hasRole('ANFITRION')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteHospedaje(@PathVariable Long id) {
         if (hospedajeService.findById(id).isPresent()) {
