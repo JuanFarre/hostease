@@ -7,6 +7,7 @@ import com.Hostease.Hostease.model.Usuario;
 import com.Hostease.Hostease.service.ITipoUsuarioService;
 import com.Hostease.Hostease.service.IUsuarioService;
 import com.Hostease.Hostease.service.JwtService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -53,7 +54,15 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public Usuario register(@RequestBody UsuarioDTO usuarioDTO) {
+    public AuthResponse register(@Valid @RequestBody UsuarioDTO usuarioDTO) {
+        // Verifica si el username o email ya existen
+        if (usuarioService.existsByUsername(usuarioDTO.getUsername())) {
+            throw new RuntimeException("El nombre de usuario ya está en uso");
+        }
+        if (usuarioService.existsByEmail(usuarioDTO.getEmail())) {
+            throw new RuntimeException("El correo electrónico ya está en uso");
+        }
+
         Usuario usuario = new Usuario();
         usuario.setUsername(usuarioDTO.getUsername());
         usuario.setPassword(passwordEncoder.encode(usuarioDTO.getPassword()));
@@ -63,7 +72,7 @@ public class AuthController {
         usuario.setFecha_nacimiento(usuarioDTO.getFecha_nacimiento());
         usuario.setFecha_creacion(Instant.now());
 
-        // Check if tipoUsuarios is null and initialize if necessary
+        // Manejo de TipoUsuario
         Set<TipoUsuario> tiposUsuariosCargados = new HashSet<>();
         if (usuarioDTO.getTipoUsuarios() != null) {
             for (TipoUsuario tipoUsuario : usuarioDTO.getTipoUsuarios()) {
@@ -74,6 +83,12 @@ public class AuthController {
         }
         usuario.setTipoUsuarios(tiposUsuariosCargados);
 
-        return usuarioService.createUsuario(usuario);
+        // Crea el usuario
+        Usuario nuevoUsuario = usuarioService.createUsuario(usuario);
+
+        // Genera y devuelve el token de autenticación
+        String token = jwtService.generateToken(nuevoUsuario, new HashMap<>());
+        return new AuthResponse(token);
     }
+
 }

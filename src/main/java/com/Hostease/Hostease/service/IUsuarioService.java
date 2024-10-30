@@ -22,6 +22,10 @@ public interface IUsuarioService {
 
     void actualizarUsuario(EditUsuarioDTO editUsuarioDTO, String username);
 
+    public boolean existsByUsername(String username);
+
+    public boolean existsByEmail(String email);
+
 
 
 }
