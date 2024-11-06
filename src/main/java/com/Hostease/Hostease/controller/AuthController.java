@@ -10,6 +10,8 @@ import com.Hostease.Hostease.service.JwtService;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -55,13 +57,12 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public AuthResponse register(@Valid @RequestBody UsuarioDTO usuarioDTO) {
-        // Verifica si el username o email ya existen
+    public ResponseEntity<?> register(@Valid @RequestBody UsuarioDTO usuarioDTO) {
         if (usuarioService.existsByUsername(usuarioDTO.getUsername())) {
-            throw new RuntimeException("El nombre de usuario ya está en uso");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("El nombre de usuario ya está en uso");
         }
         if (usuarioService.existsByEmail(usuarioDTO.getEmail())) {
-            throw new RuntimeException("El correo electrónico ya está en uso");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("El correo electrónico ya está en uso");
         }
 
         Usuario usuario = new Usuario();
@@ -89,7 +90,7 @@ public class AuthController {
 
         // Genera y devuelve el token de autenticación
         String token = jwtService.generateToken(nuevoUsuario, new HashMap<>());
-        return new AuthResponse(token);
+        return ResponseEntity.ok(new AuthResponse(token));
     }
 
 }
