@@ -53,16 +53,30 @@ public class AuthController {
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String token = jwtService.generateToken(userDetails, new HashMap<>());
-        return new AuthResponse(token);
+
+        Usuario usuario = usuarioService.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        return new AuthResponse(
+                token,
+                usuario.getUsername(),
+                usuario.getEmail(),
+                usuario.getNombre(),
+                usuario.getApellido(),
+                usuario.getFecha_nacimiento().toString(),
+                usuario.getFecha_creacion().toString(),
+                usuario.getFecha_modificacion() != null ? usuario.getFecha_modificacion().toString() : null,
+                usuario.getTipoUsuarios()
+        );
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody UsuarioDTO usuarioDTO) {
+    public ResponseEntity<AuthResponse> register(@Valid @RequestBody UsuarioDTO usuarioDTO) {
         if (usuarioService.existsByUsername(usuarioDTO.getUsername())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("El nombre de usuario ya está en uso");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         }
         if (usuarioService.existsByEmail(usuarioDTO.getEmail())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("El correo electrónico ya está en uso");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         }
 
         Usuario usuario = new Usuario();
@@ -90,7 +104,19 @@ public class AuthController {
 
         // Genera y devuelve el token de autenticación
         String token = jwtService.generateToken(nuevoUsuario, new HashMap<>());
-        return ResponseEntity.ok(new AuthResponse(token));
+
+        AuthResponse authResponse = new AuthResponse(
+                token,
+                nuevoUsuario.getUsername(),
+                nuevoUsuario.getEmail(),
+                nuevoUsuario.getNombre(),
+                nuevoUsuario.getApellido(),
+                nuevoUsuario.getFecha_nacimiento().toString(),
+                nuevoUsuario.getFecha_creacion().toString(),
+                nuevoUsuario.getFecha_modificacion() != null ? nuevoUsuario.getFecha_modificacion().toString() : null,
+                nuevoUsuario.getTipoUsuarios()
+        );
+        return ResponseEntity.ok(authResponse);
     }
 
 }
