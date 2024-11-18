@@ -18,8 +18,6 @@ import java.util.List;
 @AllArgsConstructor
 public class EditHospedajeDTO {
 
-    @NotBlank(message = "El nombre no puede estar vacío")
-    private String nombre;
 
     @NotBlank(message = "La descripción no puede estar vacía")
     private String descripcion;

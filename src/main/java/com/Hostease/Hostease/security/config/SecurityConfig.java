@@ -37,6 +37,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/servicios/all").permitAll()
                         .requestMatchers("/api/ciudades/**").permitAll()
                         .requestMatchers("/api/paises/**").permitAll()
+                        .requestMatchers("/api/hospedajes/**").permitAll()//permitimos acceso a todo para el front y fue
                         .requestMatchers("/api/hospedajes/crear").permitAll() // con este endpoint te deja crearlo desde el front
                         //.requestMatchers("/api/hospedajes/crear").hasRole("ANFITRION") // aca no te deja te tira error de CORS
                         .requestMatchers("api/tipos-hospedaje/**").permitAll()
