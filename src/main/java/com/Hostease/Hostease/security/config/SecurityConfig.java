@@ -34,8 +34,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/usuarios/crear").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/servicios/all").permitAll()
                         .requestMatchers("/api/ciudades/**").permitAll()
                         .requestMatchers("/api/paises/**").permitAll()
+                        .requestMatchers("/api/hospedajes/crear").permitAll() // con este endpoint te deja crearlo desde el front
+                        //.requestMatchers("/api/hospedajes/crear").hasRole("ANFITRION") // aca no te deja te tira error de CORS
                         .requestMatchers("api/tipos-hospedaje/**").permitAll()
                         .requestMatchers("/api/tipo-usuarios/**").permitAll()
 
