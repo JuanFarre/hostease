@@ -45,7 +45,7 @@ public class SecurityConfig {
                         .requestMatchers("api/tipos-hospedaje/**").permitAll()
                         .requestMatchers("/api/tipo-usuarios/**").permitAll()
                         .requestMatchers("/api/usuarios/modificar").authenticated()
-                        .requestMatchers("/api/servicios/**").hasAnyAuthority("ADMINISTRADOR")
+                        .requestMatchers("/api/servicios/**").permitAll()
                         .requestMatchers("/api/reservas/**").hasAnyRole("INQUILINO")
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
