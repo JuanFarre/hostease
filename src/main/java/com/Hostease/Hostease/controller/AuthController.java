@@ -1,4 +1,5 @@
 package com.Hostease.Hostease.controller;
+
 import com.Hostease.Hostease.dto.AuthRequest;
 import com.Hostease.Hostease.dto.AuthResponse;
 import com.Hostease.Hostease.dto.UsuarioDTO;
@@ -8,7 +9,6 @@ import com.Hostease.Hostease.service.ITipoUsuarioService;
 import com.Hostease.Hostease.service.IUsuarioService;
 import com.Hostease.Hostease.service.JwtService;
 import jakarta.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +44,6 @@ public class AuthController {
     @Autowired
     private IUsuarioService usuarioService;
 
-
     @PostMapping("/login")
     public AuthResponse login(@RequestBody AuthRequest authRequest) throws AuthenticationException {
         Authentication authentication = authenticationManager.authenticate(
@@ -59,6 +58,7 @@ public class AuthController {
 
         return new AuthResponse(
                 token,
+                usuario.getId(),
                 usuario.getUsername(),
                 usuario.getEmail(),
                 usuario.getNombre(),
@@ -107,6 +107,7 @@ public class AuthController {
 
         AuthResponse authResponse = new AuthResponse(
                 token,
+                nuevoUsuario.getId(),
                 nuevoUsuario.getUsername(),
                 nuevoUsuario.getEmail(),
                 nuevoUsuario.getNombre(),
@@ -118,5 +119,4 @@ public class AuthController {
         );
         return ResponseEntity.ok(authResponse);
     }
-
 }
