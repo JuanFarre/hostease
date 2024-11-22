@@ -17,5 +17,6 @@ public interface IReservaService {
 
     public void deleteById(PKReserva id);
 
+    public List<Reserva> findReservasByUsuarioId(Long idUsuario);
     public boolean HospedajeDisponible(Long idHospedaje, Date fechaCheckIn, Date fechaCheckOut);
 }

@@ -92,4 +92,9 @@ public class ReservaService implements IReservaService {
         List<Reserva> reservas = reservaRepository.findReservasByHospedajeAndDates(idHospedaje, fechaCheckIn, fechaCheckOut);
         return reservas.isEmpty();
     }
+    // ReservaService.java
+    public List<Reserva> findReservasByUsuarioId(Long idUsuario) {
+        return reservaRepository.findById_IdUsuario(idUsuario);
+    }
+
 }

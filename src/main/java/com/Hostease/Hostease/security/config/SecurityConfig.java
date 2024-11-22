@@ -44,6 +44,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/hospedajes/edit/**").permitAll()
                         .requestMatchers("api/tipos-hospedaje/**").permitAll()
                         .requestMatchers("/api/tipo-usuarios/**").permitAll()
+                        .requestMatchers("/api/usuarios/modificar").authenticated()
+                        .requestMatchers("/api/servicios/**").hasAnyAuthority("ADMINISTRADOR")
+                        .requestMatchers("/api/reservas/**").hasAnyRole("INQUILINO")
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

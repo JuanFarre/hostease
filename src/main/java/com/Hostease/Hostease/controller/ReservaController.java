@@ -29,6 +29,8 @@ public class ReservaController {
         return reservaService.findAll();
     }
 
+
+
     @GetMapping("/{idHospedaje}/{idUsuario}")
     public ResponseEntity<Reserva> getReservaById(@PathVariable Long idHospedaje, @PathVariable Long idUsuario) {
         PKReserva id = new PKReserva(idHospedaje, idUsuario);
@@ -97,4 +99,27 @@ public class ReservaController {
         reservaService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+    // ReservaController.java
+    @GetMapping("/usuario/{idUsuario}")
+    public ResponseEntity<List<ReservaDTO>> obtenerReservasPorUsuario(@PathVariable Long idUsuario) {
+        List<Reserva> reservas = reservaService.findReservasByUsuarioId(idUsuario);
+        List<ReservaDTO> reservaDTOs = reservas.stream()
+                .map(reserva -> new ReservaDTO(
+                        reserva.getId().getIdHospedaje(),
+                        reserva.getId().getIdUsuario(),
+                        reserva.getFechaCheckIn(),
+                        reserva.getFechaCheckOut(),
+                        reserva.getCantNinos(),
+                        reserva.getCantAdultos(),
+                        reserva.getCantBebes(),
+                        reserva.getCantMascotas(),
+                        reserva.getImporteTotal(),
+                        reserva.getFechaCreacion(),
+                        reserva.getFechaModificacion()
+                ))
+                .toList();
+        return ResponseEntity.ok(reservaDTOs);
+    }
+
+
 }

@@ -13,6 +13,7 @@ import java.util.List;
 @Repository
 public interface IReservaRepository extends JpaRepository<Reserva, PKReserva> {
 
+        List<Reserva> findById_IdUsuario(Long idUsuario);
 
 
         @Query("SELECT r FROM Reserva r WHERE r.id.idHospedaje = :idHospedaje AND " +
